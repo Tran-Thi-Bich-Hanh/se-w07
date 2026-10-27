@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - V4 P2P Decentralized & Kanban</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-background">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1>TaskMaster <span class="badge-v4">V4 P2P</span></h1>
+                    <p class="subtitle">Decentralized P2P Task Management • SQLite & UDP/TCP Sync</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <button id="btn-sync-p2p" class="btn btn-outline" title="Kích hoạt đồng bộ P2P tức thì">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    Đồng Bộ P2P
+                </button>
+                <span id="connection-status" class="status-tag online">
+                    <span class="pulse-indicator"></span>
+                    Node Online
+                </span>
+            </div>
+        </header>
+
+        <!-- P2P Mesh Network Monitor -->
+        <section class="card p2p-card">
+            <div class="p2p-header">
+                <div class="p2p-node-info">
+                    <span class="p2p-label">Node Cục Bộ:</span>
+                    <code id="local-node-id" class="node-id-badge">Đang tải...</code>
+                    <span class="p2p-port-badge">HTTP: <b id="local-http-port">-</b></span>
+                    <span class="p2p-port-badge">P2P: <b id="local-p2p-port">-</b></span>
+                    <span class="p2p-port-badge">UDP: <b id="local-udp-port">8888</b></span>
+                </div>
+                <div class="p2p-stats">
+                    <span class="peer-count-badge">
+                        <span class="peer-dot"></span>
+                        <span id="peer-count">0</span> Peer(s) trong LAN
+                    </span>
+                </div>
+            </div>
+
+            <div id="peers-container" class="peers-container">
+                <div class="no-peers-msg">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    Đang tìm kiếm peer khác trong mạng LAN qua UDP Broadcast (Port 8888)...
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Task Form -->
+        <section class="card form-card">
+            <h2 class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Tạo Công Việc Mới
+            </h2>
+            <form id="add-task-form">
+                <div class="form-row">
+                    <div class="form-group flex-2">
+                        <label for="task-title">Tiêu đề công việc <span class="required">*</span></label>
+                        <input type="text" id="task-title" placeholder="Nhập tên công việc cần làm..." required autocomplete="off">
+                    </div>
+                    <div class="form-group flex-3">
+                        <label for="task-desc">Ghi chú / Chi tiết</label>
+                        <input type="text" id="task-desc" placeholder="Mô tả ngắn gọn công việc..." autocomplete="off">
+                    </div>
+                    <button type="submit" id="btn-add-task" class="btn btn-primary btn-submit">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Thêm Task
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Kanban Board (2 Columns: Pending & Completed) -->
+        <section class="kanban-section">
+            <div class="kanban-grid">
+                <!-- Column 1: Cần Làm / Đang Thực Hiện -->
+                <div class="kanban-column" id="col-pending">
+                    <div class="column-header">
+                        <div class="col-title-wrap">
+                            <span class="col-indicator pending"></span>
+                            <h2>Cần Làm / Đang Thực Hiện</h2>
+                        </div>
+                        <span class="count-pill" id="count-pending">0</span>
+                    </div>
+                    <div class="column-body" id="list-pending">
+                        <!-- Cards dynamically rendered -->
+                    </div>
+                </div>
+
+                <!-- Column 2: Đã Hoàn Thành -->
+                <div class="kanban-column" id="col-completed">
+                    <div class="column-header">
+                        <div class="col-title-wrap">
+                            <span class="col-indicator completed"></span>
+                            <h2>Đã Hoàn Thành</h2>
+                        </div>
+                        <span class="count-pill" id="count-completed">0</span>
+                    </div>
+                    <div class="column-body" id="list-completed">
+                        <!-- Cards dynamically rendered -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>TaskMaster V4 Decentralized Architecture • Database: <code>SQLite (tasks.db)</code> • P2P: <code>UDP Broadcast + TCP LWW</code></p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
